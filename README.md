@@ -2,6 +2,8 @@
 
 A Three.js flow-field particle lab for painting animated chromatic vector fields in the browser.
 
+Live demo: https://codeaustral-oss.github.io/chroma-field-lab/
+
 ![Chroma Field Lab preview](./public/preview.svg)
 
 ## What it does
