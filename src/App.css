@@ -1,0 +1,252 @@
+#root {
+  min-height: 100dvh;
+}
+
+.field-shell {
+  background:
+    radial-gradient(circle at 32% 42%, rgba(217, 237, 146, 0.14), transparent 28rem),
+    radial-gradient(circle at 76% 22%, rgba(247, 127, 0, 0.13), transparent 25rem),
+    #080a08;
+  color: #f8f9fa;
+  min-height: 100dvh;
+  overflow: hidden;
+  position: relative;
+}
+
+.field-stage {
+  inset: 0;
+  position: fixed;
+}
+
+.field-stage canvas {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+.control-panel {
+  background: rgba(9, 12, 9, 0.76);
+  border: 1px solid rgba(248, 249, 250, 0.13);
+  border-radius: 8px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 30px 80px rgba(0, 0, 0, 0.34);
+  left: 24px;
+  max-height: calc(100dvh - 48px);
+  overflow: auto;
+  padding: 18px;
+  position: fixed;
+  top: 24px;
+  width: min(376px, calc(100vw - 48px));
+}
+
+.brand-row {
+  align-items: center;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 40px 1fr;
+  margin-bottom: 18px;
+}
+
+.brand-row > span {
+  align-items: center;
+  background: #d9ed92;
+  border-radius: 8px;
+  color: #11160c;
+  display: grid;
+  height: 40px;
+  justify-content: center;
+  width: 40px;
+}
+
+.brand-row p,
+.brand-row small,
+.section-label {
+  margin: 0;
+}
+
+.brand-row p {
+  font-size: 1rem;
+  font-weight: 780;
+}
+
+.brand-row small {
+  color: rgba(248, 249, 250, 0.62);
+}
+
+.mode-row {
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  display: grid;
+  gap: 4px;
+  grid-template-columns: repeat(3, 1fr);
+  padding: 4px;
+}
+
+button {
+  font: inherit;
+}
+
+.mode-row button,
+.palette,
+.action-row button {
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+.mode-row button {
+  background: transparent;
+  color: rgba(248, 249, 250, 0.62);
+  padding: 9px 8px;
+  text-transform: capitalize;
+}
+
+.mode-row button.active {
+  background: #d9ed92;
+  color: #11160c;
+}
+
+.mode-row button:active,
+.palette:active,
+.action-row button:active {
+  transform: translateY(1px) scale(0.99);
+}
+
+.panel-section {
+  border-top: 1px solid rgba(248, 249, 250, 0.11);
+  display: grid;
+  gap: 12px;
+  padding: 16px 0;
+}
+
+.section-label {
+  color: rgba(248, 249, 250, 0.56);
+  font-size: 0.72rem;
+  font-weight: 760;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.range-control {
+  display: grid;
+  gap: 7px;
+}
+
+.range-control span {
+  align-items: center;
+  color: rgba(248, 249, 250, 0.72);
+  display: flex;
+  font-size: 0.82rem;
+  justify-content: space-between;
+}
+
+.range-control strong {
+  color: #f8f9fa;
+  font-variant-numeric: tabular-nums;
+}
+
+.range-control input {
+  accent-color: #52b788;
+  width: 100%;
+}
+
+.palette-grid {
+  display: grid;
+  gap: 8px;
+}
+
+.palette {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(248, 249, 250, 0.76);
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 82px 1fr;
+  min-height: 46px;
+  padding: 9px;
+  text-align: left;
+}
+
+.palette.active {
+  border-color: rgba(217, 237, 146, 0.68);
+  color: #f8f9fa;
+}
+
+.palette span {
+  display: flex;
+}
+
+.palette i {
+  border-radius: 999px;
+  display: block;
+  height: 18px;
+  margin-right: -4px;
+  width: 18px;
+}
+
+.action-row {
+  border-top: 1px solid rgba(248, 249, 250, 0.11);
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(3, 1fr);
+  padding-top: 16px;
+}
+
+.action-row button {
+  align-items: center;
+  background: rgba(248, 249, 250, 0.1);
+  color: #f8f9fa;
+  display: inline-flex;
+  gap: 7px;
+  justify-content: center;
+  padding: 10px 8px;
+}
+
+.action-row button:hover {
+  background: rgba(248, 249, 250, 0.17);
+}
+
+.readout {
+  align-items: center;
+  background: rgba(9, 12, 9, 0.66);
+  border: 1px solid rgba(248, 249, 250, 0.12);
+  border-radius: 8px;
+  bottom: 24px;
+  color: rgba(248, 249, 250, 0.72);
+  display: flex;
+  gap: 14px;
+  padding: 12px 14px;
+  position: fixed;
+  right: 24px;
+}
+
+.readout span {
+  align-items: center;
+  display: inline-flex;
+  gap: 7px;
+  text-transform: capitalize;
+}
+
+.readout strong {
+  color: #f8f9fa;
+}
+
+@media (max-width: 760px) {
+  .control-panel {
+    bottom: 16px;
+    left: 16px;
+    max-height: 50dvh;
+    top: auto;
+    width: calc(100vw - 32px);
+  }
+
+  .readout {
+    bottom: auto;
+    justify-content: space-between;
+    left: 16px;
+    right: 16px;
+    top: 16px;
+  }
+}
