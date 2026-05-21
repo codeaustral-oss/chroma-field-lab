@@ -4,9 +4,13 @@
   "description": "A Three.js flow-field particle lab for painting animated chromatic vector fields.",
   "type": "module",
   "license": "MIT",
+  "homepage": "https://codeaustral-oss.github.io/chroma-field-lab/",
   "repository": {
     "type": "git",
     "url": "https://github.com/codeaustral-oss/chroma-field-lab.git"
+  },
+  "bugs": {
+    "url": "https://github.com/codeaustral-oss/chroma-field-lab/issues"
   },
   "keywords": [
     "threejs",

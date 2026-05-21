@@ -1,5 +1,6 @@
 import './App.css'
-import { Camera, Crosshair, RefreshCw, Shuffle, Wind } from 'lucide-react'
+import { Camera, Crosshair, Download, RefreshCw, Shuffle, Upload, Wind } from 'lucide-react'
+import type { ChangeEvent } from 'react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
 
@@ -40,6 +41,29 @@ const initialSettings: FieldSettings = {
   mode: 'curl',
   palette: palettes[0].name,
   seed: 61740,
+}
+
+function clamp(value: number, min: number, max: number) {
+  return Math.max(min, Math.min(max, value))
+}
+
+function normalizeSettings(input: unknown): FieldSettings {
+  const source = typeof input === 'object' && input ? input as Partial<FieldSettings> : {}
+  const mode = source.mode && ['curl', 'magnet', 'tide'].includes(source.mode) ? source.mode : initialSettings.mode
+  const palette = palettes.some((item) => item.name === source.palette) ? source.palette! : initialSettings.palette
+
+  return {
+    count: Math.round(clamp(Number(source.count) || initialSettings.count, 2400, 18000)),
+    spread: clamp(Number(source.spread) || initialSettings.spread, 3.5, 10),
+    fieldScale: clamp(Number(source.fieldScale) || initialSettings.fieldScale, 0.18, 1.4),
+    velocity: clamp(Number(source.velocity) || initialSettings.velocity, 0.05, 1.8),
+    attractor: clamp(Number(source.attractor) || initialSettings.attractor, 0, 1.5),
+    pointSize: clamp(Number(source.pointSize) || initialSettings.pointSize, 0.01, 0.07),
+    depth: clamp(Number(source.depth) || initialSettings.depth, 0.2, 4),
+    mode,
+    palette,
+    seed: Math.round(clamp(Number(source.seed) || initialSettings.seed, 1, 99999)),
+  }
 }
 
 function seededRandom(seed: number) {
@@ -127,6 +151,7 @@ function wrapAxis(value: number, limit: number) {
 
 function App() {
   const mountRef = useRef<HTMLDivElement | null>(null)
+  const presetInputRef = useRef<HTMLInputElement | null>(null)
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null)
   const settingsRef = useRef<FieldSettings>(initialSettings)
   const [settings, setSettings] = useState<FieldSettings>(initialSettings)
@@ -135,6 +160,23 @@ function App() {
   useEffect(() => {
     settingsRef.current = settings
   }, [settings])
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.target instanceof HTMLInputElement || event.target instanceof HTMLButtonElement) {
+        return
+      }
+
+      if (event.key === '1') updateSetting('mode', 'curl')
+      if (event.key === '2') updateSetting('mode', 'magnet')
+      if (event.key === '3') updateSetting('mode', 'tide')
+      if (event.key.toLowerCase() === 'r') updateSetting('seed', Math.floor(Math.random() * 86000) + 10000)
+      if (event.key.toLowerCase() === '0') setSettings(initialSettings)
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [])
 
   useEffect(() => {
     const container = mountRef.current
@@ -281,6 +323,31 @@ function App() {
     link.click()
   }
 
+  const exportPreset = () => {
+    const blob = new Blob([JSON.stringify(settings, null, 2)], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = `chroma-field-preset-${settings.seed}.json`
+    link.click()
+    URL.revokeObjectURL(url)
+  }
+
+  const importPreset = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (!file) return
+    const reader = new FileReader()
+    reader.onload = () => {
+      try {
+        setSettings(normalizeSettings(JSON.parse(String(reader.result))))
+      } catch {
+        window.alert('This preset file could not be read.')
+      }
+      event.target.value = ''
+    }
+    reader.readAsText(file)
+  }
+
   return (
     <main className="field-shell">
       <section className="field-stage" ref={mountRef} aria-label="Animated Three.js flow-field particles" />
@@ -350,10 +417,19 @@ function App() {
             <RefreshCw size={16} />
             Reset
           </button>
+          <button type="button" onClick={exportPreset}>
+            <Download size={16} />
+            JSON
+          </button>
+          <button type="button" onClick={() => presetInputRef.current?.click()}>
+            <Upload size={16} />
+            Import
+          </button>
           <button type="button" onClick={exportImage}>
             <Camera size={16} />
             PNG
           </button>
+          <input ref={presetInputRef} className="hidden-input" type="file" accept="application/json,.json" onChange={importPreset} />
         </div>
       </aside>
 

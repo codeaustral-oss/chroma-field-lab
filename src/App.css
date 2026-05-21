@@ -190,7 +190,7 @@ button {
   border-top: 1px solid rgba(248, 249, 250, 0.11);
   display: grid;
   gap: 8px;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   padding-top: 16px;
 }
 
@@ -206,6 +206,10 @@ button {
 
 .action-row button:hover {
   background: rgba(248, 249, 250, 0.17);
+}
+
+.hidden-input {
+  display: none;
 }
 
 .readout {
@@ -248,5 +252,9 @@ button {
     left: 16px;
     right: 16px;
     top: 16px;
+  }
+
+  .action-row {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
